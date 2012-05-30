@@ -122,13 +122,6 @@ do
     esac
 done
 
-# Check for dirs
-if [ $# -eq 0 ]
-then
-    verbose_echo "No directories in output"
-    usage
-fi
-
 verbose_echo "Running $cmdname at `date`."
 
 # Unrar files
