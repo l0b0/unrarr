@@ -43,8 +43,7 @@
 ################################################################################
 
 # Output error message
-error()
-{
+error() {
     test -t 1 && {
 		tput setf 4
 		echo "$1" >&2
@@ -58,8 +57,7 @@ error()
     fi
 }
 
-verbose_echo()
-{
+verbose_echo() {
     if [ $verbose ]
     then
         echo "$*"
@@ -122,7 +120,8 @@ do
             delete=1
             shift
             ;;
-        --) shift
+        --)
+            shift
             break
             ;;
         *)
@@ -159,7 +158,7 @@ do
         if [ $delete ]
         then
             verbose_echo "Deleting $file"
-            rm "$file"
+            rm -- "$file"
         fi
     done
 done
