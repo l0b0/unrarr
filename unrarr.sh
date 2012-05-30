@@ -131,8 +131,6 @@ do
     esac
 done
 
-dirs=$*
-
 # Check for dirs
 if [ $# -eq 0 ]
 then
@@ -143,7 +141,7 @@ fi
 verbose_echo "Running $cmdname at `date`."
 
 # Unrar files
-for dir in $dirs
+for dir
 do
     verbose_echo "Processing directory $dir"
 
