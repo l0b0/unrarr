@@ -122,12 +122,12 @@ do
     esac
 done
 
-verbose_echo "Running $cmdname at `date`."
+verbose_echo "Running $cmdname at $(date)."
 
 # Unrar files
 for dir
 do
-    verbose_echo "Processing directory $dir"
+    verbose_echo "Processing directory: $dir"
 
     if [ ! -d "$dir" ]
     then
