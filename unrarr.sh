@@ -47,10 +47,10 @@ set -o errexit -o noclobber -o nounset -o pipefail
 # Output error message
 error() {
     test -t 1 && {
-		tput setf 4
-		echo "$1" >&2
-		tput setf 7
-	} || echo "$1" >&2
+        tput setf 4
+        echo "$1" >&2
+        tput setf 7
+    } || echo "$1" >&2
     exit ${2-$EX_UNKNOWN}
 }
 
