@@ -26,9 +26,12 @@
 
 declare -r cmd="$(dirname -- "$0")/$(basename -- "$(dirname -- "$0")").sh"
 declare -r test_name=$'--$`!*@\a\b\E\f\r\t\v\\\'"\360\240\202\211 \n'
+declare -r test_file="$0"
 
 oneTimeSetUp() {
     test_dir="$__shunit_tmpDir/$test_name"
+    stdout_file="${test_dir}/stdout"
+    stderr_file="${test_dir}/stderr"
 }
 
 setUp() {
@@ -41,9 +44,15 @@ tearDown() {
 }
 
 test_simple() {
-    file_name="$test_dir"/"$test_name".rar
-    rar a "$file_name" "$cmd"
-    "$cmd"
+    archive="$test_dir"/"$test_name".rar
+    rar a -- "$archive" "$test_file" 2>&1 >/dev/null
+    assertEquals 'Could not create archive' 0 $?
+    "$cmd" -- "$test_dir" > "$stdout_file" 2> "$stderr_file"
+    assertEquals 'Could not extract archive' 0 $?
+    assertTrue 'Extracted file missing' "[ -f \"\$test_dir/\$test_file\" ]"
+    assertTrue 'Archive missing' "[ -f \"\$archive\" ]"
+    assertTrue 'No output on standard output' "[ -s \"\$stdout_file\" ]"
+    assertFalse 'Output on standard error' "[ -s \"\$stderr_file\" ]"
 }
 
 test_verbose() {
