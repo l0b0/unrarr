@@ -116,6 +116,7 @@ do
             break
             ;;
         *)
+            echo "Not implemented: $1" >&2
             usage
             ;;
     esac
