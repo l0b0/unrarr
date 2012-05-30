@@ -71,26 +71,6 @@ usage()
     error "Usage: ${cmdname} [-v|--verbose] [-d|--delete] directory..." $EX_USAGE
 }
 
-# Check if a path is an existing directory
-directory_exists()
-{
-    if [ -d $1 ]
-    then
-        echo 1
-    fi
-}
-
-# Use for mandatory directory checks
-# $2 is the (optional) error message
-require_directory()
-{
-    if [ ! $(directory_exists $1) ]
-    then
-        error "No such directory '${1}'
-$2" $EX_NO_SUCH_DIR
-    fi
-}
-
 ifs_original="$IFS" # Reset when done
 IFS="
 " # Make sure paths with spaces don't make any trouble when looping
@@ -167,7 +147,10 @@ for dir in $dirs
 do
     verbose_echo "Processing directory $dir"
 
-    require_directory $dir
+    if [ ! -d "$dir" ]
+    then
+        error 'No such directory: '"$dir" $EX_NO_SUCH_DIR
+    fi
 
     for file in `find $dir -wholename "*.rar"`
     do
