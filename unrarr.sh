@@ -133,7 +133,7 @@ done
 dirs=$*
 
 # Check for dirs
-if [ -z "$dirs" ]
+if [ $# -eq 0 ]
 then
     verbose_echo "No directories in output"
     usage
