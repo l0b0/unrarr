@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 #
 # NAME
 #        unrarr.sh - UnRAR recursive
@@ -49,16 +49,11 @@ error() {
 		echo "$1" >&2
 		tput setf 7
 	} || echo "$1" >&2
-    if [ -z "$2" ]
-    then
-        exit $EX_UNKNOWN
-    else
-        exit $2
-    fi
+    exit ${2-$EX_UNKNOWN}
 }
 
 verbose_echo() {
-    if [ $verbose ]
+    if [ -n "${verbose+defined}" ]
     then
         echo "$*"
     fi
@@ -69,9 +64,6 @@ usage()
     error "Usage: ${cmdname} [-v|--verbose] [-d|--delete] directory..." $EX_USAGE
 }
 
-ifs_original="$IFS" # Reset when done
-IFS="
-" # Make sure paths with spaces don't make any trouble when looping
 PATH="/usr/bin:/bin"
 cmdname=$(basename $0)
 directory=$(dirname $0)
@@ -101,11 +93,7 @@ EX_NO_SUCH_DIR=91
 EX_NO_SUCH_EXEC=92
 
 # Process parameters
-params=`getopt --options vd --longoptions verbose,delete --name $cmdname -- "$@"`
-if [ $? != 0 ]
-then
-    usage
-fi
+params="$(getopt --options vd --longoptions verbose,delete --name $cmdname -- "$@")" || usage
 
 eval set -- "$params"
 unset params
@@ -150,20 +138,21 @@ do
         error 'No such directory: '"$dir" $EX_NO_SUCH_DIR
     fi
 
-    for file in `find $dir -wholename "*.rar"`
+    while IFS= read -r -d '' -u 9 file
     do
         verbose_echo "Extracting $file"
-        rar x "$file" "`dirname $file`" || error "Failed when processing $file"
-        if [ $delete ]
+        dirx="$(dirname -- "$file"; echo x)"
+        cd -- "${dirx%$'\nx'}"
+        rar x -- "$file" || error "Failed when processing $file"
+        if [ -n "${delete+defined}" ]
         then
             verbose_echo "Deleting $file"
             rm -- "$file"
         fi
-    done
+    done 9< <(find "$dir" -wholename "*.rar" -print0)
 done
 
 verbose_echo "Cleaning up."
-IFS="$ifs_original"
 
 # End
 verbose_echo "${cmdname} completed at `date`."
