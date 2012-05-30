@@ -47,15 +47,15 @@ test_simple() {
 }
 
 test_verbose() {
-    fail "todo"
+    fail 'todo'
 }
 
 test_delete() {
-    fail "todo"
+    fail 'todo'
 }
 
 test_delete_multipart_archives() {
-    fail "todo"
+    fail 'todo'
 }
 
 # load and run shUnit2
