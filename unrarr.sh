@@ -91,33 +91,6 @@ $2" $EX_NO_SUCH_DIR
     fi
 }
 
-# Check if an executable exists on the path
-executable_exists()
-{
-    if [ "$(which $1 2>/dev/null)" ]
-    then
-        echo 1
-    fi
-}
-
-# Make sure an executable is available
-# $2 is the optional error message
-require_executable()
-{
-    if [ ! $(executable_exists $1) ]
-    then
-        error "No such executable '${1}'
-$2" $EX_NO_SUCH_EXEC
-    fi
-}
-
-# Make a random temporary directory for intermediary storage
-create_temp()
-{
-    temp_dir=`mktemp -t -d ${cmdname}.XXXXXXXXXX` || error "Couldn't create temporary directory" $EX_CANTCREAT
-    verbose_echo "Created temporary directory ${temp_dir}"
-}
-
 ifs_original="$IFS" # Reset when done
 IFS="
 " # Make sure paths with spaces don't make any trouble when looping
