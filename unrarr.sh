@@ -42,6 +42,8 @@
 #
 ################################################################################
 
+set -o errexit -o noclobber -o nounset -o pipefail
+
 # Output error message
 error() {
     test -t 1 && {
