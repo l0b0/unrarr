@@ -55,6 +55,10 @@ test_simple() {
     assertFalse 'Output on standard error' "[ -s \"\$stderr_file\" ]"
 }
 
+test_wrong_params() {
+    fail 'todo'
+}
+
 test_verbose() {
     fail 'todo'
 }
