@@ -22,8 +22,7 @@
 #        Unrar (and optionally delete) recursively in directories.
 #
 # BUGS
-#        Email bugs to victor dot engmark at gmail dot com. Please include the
-#        output of running this script in verbose mode (-v).
+#        https://github.com/l0b0/unrarr/issues
 #
 # COPYRIGHT AND LICENSE
 #        Copyright (C) 2009, 2012 Victor Engmark
