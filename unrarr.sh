@@ -151,5 +151,5 @@ done
 verbose_echo "Cleaning up."
 
 # End
-verbose_echo "${cmdname} completed at `date`."
+verbose_echo "${cmdname} completed at $(date)."
 exit $EX_OK
