@@ -129,6 +129,8 @@ then
     unrar_options='-inul'
 fi
 
+shopt -s extglob # For removal of multipart archives
+
 # Unrar files
 for dir
 do
@@ -141,14 +143,30 @@ do
 
     while IFS= read -r -d '' -u 9 file
     do
+        if [ ! -e "$file" ]
+        then
+            # Probably removed with multi-part archive
+            echo "Skipping missing file: $file" >&2
+            continue
+        fi
         verbose_echo "Extracting $file"
         dirx="$(dirname -- "$file"; echo x)"
         cd -- "${dirx%$'\nx'}"
         rar x ${unrar_options-} -- "$file" || error "Failed when processing $file"
         if [ -n "${delete+defined}" ]
         then
-            verbose_echo "Deleting $file"
-            rm -- "$file"
+            if [[ "$file" =~ .*\.part[0-9]*[0-9].rar ]]
+            then
+                # Standard multipart archive
+                rm ${verbose+--verbose} -- "${file%%.part+([0-9]).rar}.part"+([0-9])".rar"
+            else
+                rm ${verbose+--verbose} -- "$file"
+                if [ -e "${file%%.rar}".r00 ]
+                then
+                    # -vn multipart archive
+                    rm ${verbose+--verbose} -- "${file%%.rar}.r"+([0-9])
+                fi
+            fi
         fi
     done 9< <(find "$dir" -wholename "*.rar" -print0)
 done

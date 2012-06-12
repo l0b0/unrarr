@@ -91,8 +91,38 @@ test_delete() {
     assertFalse "Output on standard error: $(cat "$stderr_file")" '[ -s "$stderr_file" ]'
 }
 
-test_delete_multipart_archives() {
-    fail 'todo'
+test_delete_standard_multipart_archives() {
+    archive_prefix="$test_dir"/"$test_name"
+    archive_extension=rar
+    archive="$archive_prefix"."$archive_extension"
+    archive_1="$archive_prefix".part1."$archive_extension"
+    archive_2="$archive_prefix".part2."$archive_extension"
+    rar a -v1 -- "$archive" "$test_file" 2>&1 >/dev/null # .part1.rar, .part2.rar, etc.
+    assertEquals 'Could not create archive' 0 $?
+    "$cmd" --delete -- "$test_dir" > "$stdout_file" 2> "$stderr_file"
+    assertEquals 'Could not extract archive' 0 $?
+    assertTrue 'Extracted file missing' '[ -f "$test_dir/$test_file" ]'
+    assertFalse 'Archive part 1 should be deleted' '[ -f "$archive_1" ]'
+    assertFalse 'Archive part 2 should be deleted' '[ -f "$archive_2" ]'
+    assertFalse "Output on standard output: $(cat "$stdout_file")" '[ -s "$stdout_file" ]'
+    assertTrue 'No output on standard error' '[ -s "$stderr_file" ]'
+}
+
+test_delete_extension_multipart_archives() {
+    archive_prefix="$test_dir"/"$test_name"
+    archive_extension=rar
+    archive="$archive_prefix"."$archive_extension"
+    archive_1="$archive_prefix".rar
+    archive_2="$archive_prefix".r00
+    rar a -v1 -vn -- "$archive" "$test_file" 2>&1 >/dev/null # .rar, .r00, .r01, etc.
+    assertEquals 'Could not create archive' 0 $?
+    "$cmd" --delete -- "$test_dir" > "$stdout_file" 2> "$stderr_file"
+    assertEquals 'Could not extract archive' 0 $?
+    assertTrue 'Extracted file missing' '[ -f "$test_dir/$test_file" ]'
+    assertFalse 'Archive part 1 should be deleted' '[ -f "$archive_1" ]'
+    assertFalse 'Archive part 2 should be deleted' '[ -f "$archive_2" ]'
+    assertFalse "Output on standard output: $(cat "$stdout_file")" '[ -s "$stdout_file" ]'
+    assertFalse "Output on standard error: $(cat "$stderr_file")" '[ -s "$stderr_file" ]'
 }
 
 # load and run shUnit2
