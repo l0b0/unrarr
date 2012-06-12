@@ -124,6 +124,11 @@ done
 
 verbose_echo "Running $cmdname at $(date)."
 
+if [ -z "${verbose-}" ]
+then
+    unrar_options='-inul'
+fi
+
 # Unrar files
 for dir
 do
@@ -139,7 +144,7 @@ do
         verbose_echo "Extracting $file"
         dirx="$(dirname -- "$file"; echo x)"
         cd -- "${dirx%$'\nx'}"
-        rar x -- "$file" || error "Failed when processing $file"
+        rar x ${unrar_options-} -- "$file" || error "Failed when processing $file"
         if [ -n "${delete+defined}" ]
         then
             verbose_echo "Deleting $file"
