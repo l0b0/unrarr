@@ -50,6 +50,7 @@ test_simple() {
     "$cmd" -- "$test_dir" > "$stdout_file" 2> "$stderr_file"
     assertEquals 'Could not extract archive' 0 $?
     assertTrue 'Extracted file missing' '[ -f "$test_dir/$test_file" ]'
+    assertNull 'Extracted file differs from original' "$(diff "$test_dir/$test_file" "$test_file")"
     assertTrue 'Archive missing' '[ -f "$archive" ]'
     assertFalse "Output on standard output: $(cat "$stdout_file")" '[ -s "$stdout_file" ]'
     assertFalse "Output on standard error: $(cat "$stderr_file")" '[ -s "$stderr_file" ]'
@@ -74,6 +75,7 @@ test_verbose() {
     "$cmd" --verbose -- "$test_dir" > "$stdout_file" 2> "$stderr_file"
     assertEquals 'Could not extract archive' 0 $?
     assertTrue 'Extracted file missing' '[ -f "$test_dir/$test_file" ]'
+    assertNull 'Extracted file differs from original' "$(diff "$test_dir/$test_file" "$test_file")"
     assertTrue 'Archive missing' '[ -f "$archive" ]'
     assertTrue 'No output on standard output' '[ -s "$stdout_file" ]'
     assertFalse "Output on standard error: $(cat "$stderr_file")" '[ -s "$stderr_file" ]'
@@ -86,6 +88,7 @@ test_delete() {
     "$cmd" --delete -- "$test_dir" > "$stdout_file" 2> "$stderr_file"
     assertEquals 'Could not extract archive' 0 $?
     assertTrue 'Extracted file missing' '[ -f "$test_dir/$test_file" ]'
+    assertNull 'Extracted file differs from original' "$(diff "$test_dir/$test_file" "$test_file")"
     assertFalse 'Archive should be deleted' '[ -f "$archive" ]'
     assertFalse "Output on standard output: $(cat "$stdout_file")" '[ -s "$stdout_file" ]'
     assertFalse "Output on standard error: $(cat "$stderr_file")" '[ -s "$stderr_file" ]'
@@ -102,6 +105,7 @@ test_delete_standard_multipart_archives() {
     "$cmd" --delete -- "$test_dir" > "$stdout_file" 2> "$stderr_file"
     assertEquals 'Could not extract archive' 0 $?
     assertTrue 'Extracted file missing' '[ -f "$test_dir/$test_file" ]'
+    assertNull 'Extracted file differs from original' "$(diff "$test_dir/$test_file" "$test_file")"
     assertFalse 'Archive part 1 should be deleted' '[ -f "$archive_1" ]'
     assertFalse 'Archive part 2 should be deleted' '[ -f "$archive_2" ]'
     assertFalse "Output on standard output: $(cat "$stdout_file")" '[ -s "$stdout_file" ]'
@@ -119,6 +123,7 @@ test_delete_extension_multipart_archives() {
     "$cmd" --delete -- "$test_dir" > "$stdout_file" 2> "$stderr_file"
     assertEquals 'Could not extract archive' 0 $?
     assertTrue 'Extracted file missing' '[ -f "$test_dir/$test_file" ]'
+    assertNull 'Extracted file differs from original' "$(diff "$test_dir/$test_file" "$test_file")"
     assertFalse 'Archive part 1 should be deleted' '[ -f "$archive_1" ]'
     assertFalse 'Archive part 2 should be deleted' '[ -f "$archive_2" ]'
     assertFalse "Output on standard output: $(cat "$stdout_file")" '[ -s "$stdout_file" ]'
