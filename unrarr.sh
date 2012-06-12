@@ -164,7 +164,7 @@ do
                 if [ -e "${file%%.rar}".r00 ]
                 then
                     # -vn multipart archive
-                    rm ${verbose+--verbose} -- "${file%%.rar}.r"+([0-9])
+                    rm ${verbose+--verbose} -- "${file%%.rar}.r"[0-9][0-9]
                 fi
             fi
         fi
