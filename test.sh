@@ -49,10 +49,10 @@ test_simple() {
     assertEquals 'Could not create archive' 0 $?
     "$cmd" -- "$test_dir" > "$stdout_file" 2> "$stderr_file"
     assertEquals 'Could not extract archive' 0 $?
-    assertTrue 'Extracted file missing' "[ -f \"\$test_dir/\$test_file\" ]"
-    assertTrue 'Archive missing' "[ -f \"\$archive\" ]"
-    assertFalse "Output on standard output: $(cat "$stdout_file")" "[ -s \"\$stdout_file\" ]"
-    assertFalse "Output on standard error: $(cat "$stderr_file")" "[ -s \"\$stderr_file\" ]"
+    assertTrue 'Extracted file missing' '[ -f "$test_dir/$test_file" ]'
+    assertTrue 'Archive missing' '[ -f "$archive" ]'
+    assertFalse "Output on standard output: $(cat "$stdout_file")" '[ -s "$stdout_file" ]'
+    assertFalse "Output on standard error: $(cat "$stderr_file")" '[ -s "$stderr_file" ]'
 }
 
 test_wrong_params() {
@@ -61,10 +61,10 @@ test_wrong_params() {
     assertEquals 'Could not create archive' 0 $?
     "$cmd" --delete --verbose --invalid -- "$test_dir" > "$stdout_file" 2> "$stderr_file"
     assertNotEquals 'Should not extract archive' 0 $?
-    assertFalse 'Should not have extracted file' "[ -f \"\$test_dir/\$test_file\" ]"
-    assertTrue 'Archive missing' "[ -f \"\$archive\" ]"
-    assertFalse "Output on standard output: $(cat "$stdout_file")" "[ -s \"\$stdout_file\" ]"
-    assertTrue 'No output on standard error' "[ -s \"\$stderr_file\" ]"
+    assertFalse 'Should not have extracted file' '[ -f "$test_dir/$test_file" ]'
+    assertTrue 'Archive missing' '[ -f "$archive" ]'
+    assertFalse "Output on standard output: $(cat "$stdout_file")" '[ -s "$stdout_file" ]'
+    assertTrue 'No output on standard error' '[ -s "$stderr_file" ]'
 }
 
 test_verbose() {
@@ -73,10 +73,10 @@ test_verbose() {
     assertEquals 'Could not create archive' 0 $?
     "$cmd" --verbose -- "$test_dir" > "$stdout_file" 2> "$stderr_file"
     assertEquals 'Could not extract archive' 0 $?
-    assertTrue 'Extracted file missing' "[ -f \"\$test_dir/\$test_file\" ]"
-    assertTrue 'Archive missing' "[ -f \"\$archive\" ]"
-    assertTrue 'No output on standard output' "[ -s \"\$stdout_file\" ]"
-    assertFalse "Output on standard error: $(cat "$stderr_file")" "[ -s \"\$stderr_file\" ]"
+    assertTrue 'Extracted file missing' '[ -f "$test_dir/$test_file" ]'
+    assertTrue 'Archive missing' '[ -f "$archive" ]'
+    assertTrue 'No output on standard output' '[ -s "$stdout_file" ]'
+    assertFalse "Output on standard error: $(cat "$stderr_file")" '[ -s "$stderr_file" ]'
 }
 
 test_delete() {
@@ -85,10 +85,10 @@ test_delete() {
     assertEquals 'Could not create archive' 0 $?
     "$cmd" --delete -- "$test_dir" > "$stdout_file" 2> "$stderr_file"
     assertEquals 'Could not extract archive' 0 $?
-    assertTrue 'Extracted file missing' "[ -f \"\$test_dir/\$test_file\" ]"
-    assertFalse 'Archive should be deleted' "[ -f \"\$archive\" ]"
-    assertFalse "Output on standard output: $(cat "$stdout_file")" "[ -s \"\$stdout_file\" ]"
-    assertFalse "Output on standard error: $(cat "$stderr_file")" "[ -s \"\$stderr_file\" ]"
+    assertTrue 'Extracted file missing' '[ -f "$test_dir/$test_file" ]'
+    assertFalse 'Archive should be deleted' '[ -f "$archive" ]'
+    assertFalse "Output on standard output: $(cat "$stdout_file")" '[ -s "$stdout_file" ]'
+    assertFalse "Output on standard error: $(cat "$stderr_file")" '[ -s "$stderr_file" ]'
 }
 
 test_delete_multipart_archives() {
