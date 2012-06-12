@@ -57,7 +57,7 @@ error() {
 verbose_echo() {
     if [ -n "${verbose+defined}" ]
     then
-        echo "$*"
+        printf '%s\n' "$@"
     fi
 }
 
