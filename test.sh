@@ -51,8 +51,8 @@ test_simple() {
     assertEquals 'Could not extract archive' 0 $?
     assertTrue 'Extracted file missing' "[ -f \"\$test_dir/\$test_file\" ]"
     assertTrue 'Archive missing' "[ -f \"\$archive\" ]"
-    assertFalse 'Output on standard output' "[ -s \"\$stdout_file\" ]"
-    assertFalse 'Output on standard error' "[ -s \"\$stderr_file\" ]"
+    assertFalse "Output on standard output: $(cat "$stdout_file")" "[ -s \"\$stdout_file\" ]"
+    assertFalse "Output on standard error: $(cat "$stderr_file")" "[ -s \"\$stderr_file\" ]"
 }
 
 test_wrong_params() {
