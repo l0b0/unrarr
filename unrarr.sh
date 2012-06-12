@@ -10,7 +10,7 @@
 #        -d, --delete
 #               Delete files after successfully uncompressing them
 #
-#        -v
+#        -v, --verbose
 #               Verbose output
 #
 # EXAMPLE
