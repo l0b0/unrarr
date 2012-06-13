@@ -67,8 +67,8 @@ usage()
 }
 
 PATH="/usr/bin:/bin"
-cmdname=$(basename $0)
-directory=$(dirname $0)
+cmdname="$(basename -- "$0")"
+directory="$(dirname -- "$0")"
 
 # Exit codes from /usr/include/sysexits.h, as recommended by
 # http://www.faqs.org/docs/abs/HTML/exitcodes.html
