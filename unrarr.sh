@@ -15,8 +15,7 @@
 #
 # EXAMPLE
 #        ./unrarr.sh ~/downloads
-#
-#        Uncompress all RAR files in ~/downloads
+#               Uncompress all RAR files in ~/downloads.
 #
 # DESCRIPTION
 #        Unrar (and optionally delete) recursively in directories.
@@ -72,8 +71,8 @@ directory="$(dirname -- "$0")"
 
 # Exit codes from /usr/include/sysexits.h, as recommended by
 # http://www.faqs.org/docs/abs/HTML/exitcodes.html
-EX_OK=0           # successful termination
-EX_USAGE=64       # command line usage error
+EX_OK=0 # successful termination
+EX_USAGE=64 # command line usage error
 
 # Custom errors
 EX_UNKNOWN=1
