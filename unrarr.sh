@@ -17,6 +17,10 @@
 #        ./unrarr.sh ~/downloads
 #               Uncompress all RAR files in ~/downloads.
 #
+#        ./unrarr.sh --delete ~/archives
+#               Uncompress all RAR files in ~/archives and delete them
+#               afterwards.
+#
 # DESCRIPTION
 #        Unrar (and optionally delete) recursively in directories.
 #
