@@ -6,6 +6,9 @@
 # SYNOPSIS
 #        unrarr.sh [options] directory...
 #
+# DESCRIPTION
+#        Unrar (and optionally delete) recursively in directories.
+#
 # OPTIONS
 #        -d, --delete
 #               Delete files after successfully uncompressing them
@@ -20,9 +23,6 @@
 #        ./unrarr.sh --delete ~/archives
 #               Uncompress all RAR files in ~/archives and delete them
 #               afterwards.
-#
-# DESCRIPTION
-#        Unrar (and optionally delete) recursively in directories.
 #
 # BUGS
 #        https://github.com/l0b0/unrarr/issues
