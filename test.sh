@@ -24,7 +24,8 @@
 #
 ################################################################################
 
-declare -r cmd="$(dirname -- "$0")/$(basename -- "$(dirname -- "$0")").sh"
+declare -r directory="$(dirname -- "$(readlink -f -- "$0")")"
+declare -r cmd="${directory}/$(basename -- "$directory").sh"
 declare -r test_name=$'--$`!*@\a\b\E\f\r\t\v\\\'"\360\240\202\211 \n'
 declare -r test_file="$0"
 

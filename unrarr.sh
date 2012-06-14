@@ -47,43 +47,19 @@
 
 set -o errexit -o noclobber -o nounset -o pipefail
 
-# Output error message
-error() {
-    test -t 1 && {
-        tput setf 4
-        echo "$1" >&2
-        tput setf 7
-    } || echo "$1" >&2
-    exit ${2-$EX_UNKNOWN}
-}
-
-verbose_echo() {
-    if [ -n "${verbose+defined}" ]
-    then
-        printf '%s\n' "$@"
-    fi
-}
-
-usage()
-{
-    error "Usage: ${cmdname} [-v|--verbose] [-d|--delete] directory..." $EX_USAGE
-}
-
 PATH="/usr/bin:/bin"
-cmdname="$(basename -- "$0")"
 directory="$(dirname -- "$0")"
 
-# Exit codes from /usr/include/sysexits.h, as recommended by
-# http://www.faqs.org/docs/abs/HTML/exitcodes.html
-EX_OK=0 # successful termination
-EX_USAGE=64 # command line usage error
+. "$directory"/shell-includes/error.sh
+. "$directory"/shell-includes/usage.sh
+. "$directory"/shell-includes/variables.sh
+. "$directory"/shell-includes/verbose_echo.sh
 
 # Custom errors
-EX_UNKNOWN=1
-EX_NO_SUCH_DIR=91
+ex_no_such_dir=91
 
 # Process parameters
-params="$(getopt --options vd --longoptions verbose,delete --name $cmdname -- "$@")" || usage
+params="$(getopt --options vd --longoptions verbose,delete --name "$script" -- "$@")" || usage $ex_usage
 
 eval set -- "$params"
 unset params
@@ -105,12 +81,12 @@ do
             ;;
         *)
             echo "Not implemented: $1" >&2
-            usage
+            usage $ex_unknown
             ;;
     esac
 done
 
-verbose_echo "Running $cmdname at $(date)."
+verbose_echo "Running $script at $(date)."
 
 if [ -z "${verbose-}" ]
 then
@@ -126,7 +102,7 @@ do
 
     if [ ! -d "$dir" ]
     then
-        error 'No such directory: '"$dir" $EX_NO_SUCH_DIR
+        error 'No such directory: '"$dir" $ex_no_such_dir
     fi
 
     while IFS= read -r -d '' -u 9 file
@@ -162,5 +138,5 @@ done
 verbose_echo "Cleaning up."
 
 # End
-verbose_echo "${cmdname} completed at $(date)."
-exit $EX_OK
+verbose_echo "${script} completed at $(date)."
+exit $ex_ok
