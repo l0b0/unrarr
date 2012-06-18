@@ -11,4 +11,4 @@ _unrarr()
 
     COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
 }
-complete -o filenames -o default -F _unrarr unrarr
+complete -o dirnames -o default -F _unrarr unrarr
