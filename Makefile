@@ -13,5 +13,6 @@ test:
 install:
 	install $(SOURCE_PATH) $(TARGET_PATH)
 	sed -i -e 's/\(\.\/\)\?$(SOURCE_FILE)/$(TARGET_FILE)/g' $(TARGET_PATH)
+	install --mode 644 etc/bash_completion.d/$(TARGET_FILE) /etc/bash_completion.d/
 
 include tools.mk
