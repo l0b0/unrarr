@@ -48,12 +48,13 @@
 set -o errexit -o noclobber -o nounset -o pipefail
 
 PATH="/usr/bin:/bin"
-directory="$(dirname -- "$0")"
 
-. "$directory"/shell-includes/error.sh
-. "$directory"/shell-includes/usage.sh
-. "$directory"/shell-includes/variables.sh
-. "$directory"/shell-includes/verbose_echo.sh
+includes="$(dirname -- "$0")"/shell-includes
+. "$includes"/error.sh
+. "$includes"/usage.sh
+. "$includes"/variables.sh
+. "$includes"/verbose_echo.sh
+unset includes
 
 # Custom errors
 ex_no_such_dir=91

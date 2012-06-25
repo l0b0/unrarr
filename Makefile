@@ -1,18 +1,29 @@
-PREFIX = /usr/local/bin
+prefix = /usr/local
+bindir = $(prefix)/bin
+sharedir = $(prefix)/share
 
-SOURCE_FILE = $(wildcard $(notdir $(CURDIR)).*)
-SOURCE_PATH = $(CURDIR)/$(SOURCE_FILE)
-TARGET_FILE = $(basename $(SOURCE_FILE))
-TARGET_PATH = $(PREFIX)/$(TARGET_FILE)
+name = $(notdir $(CURDIR))
+script = $(name).sh
+installed_script = $(bindir)/$(name)
+
+include_path = $(sharedir)/$(name)
 
 .PHONY: test
 test:
 	$(CURDIR)/test.sh
 
 .PHONY: install
-install:
-	install $(SOURCE_PATH) $(TARGET_PATH)
-	sed -i -e 's/\(\.\/\)\?$(SOURCE_FILE)/$(TARGET_FILE)/g' $(TARGET_PATH)
-	install --mode 644 etc/bash_completion.d/$(TARGET_FILE) /etc/bash_completion.d/
+install: $(include_path)
+	install $(script) $(installed_script)
+	sed -i -e 's#\(\./\)\?$(script)#$(name)#g' $(installed_script)
+	install --mode 644 etc/bash_completion.d/$(name) /etc/bash_completion.d/
+	install --mode 644 shell-includes/error.sh $(include_path)
+	install --mode 644 shell-includes/usage.sh $(include_path)
+	install --mode 644 shell-includes/variables.sh $(include_path)
+	install --mode 644 shell-includes/verbose_echo.sh $(include_path)
+	sed -i -e 's#^\(includes=\).*#\1"$(include_path)"#g' $(installed_script)
+
+$(include_path):
+	mkdir $(include_path)
 
 include tools.mk
