@@ -6,5 +6,12 @@ Recursive unrar, optionally deleting the archive files afterwards.
 Installation
 ------------
 
-    make test # optional
     sudo make install
+
+Test
+----
+
+Requires `shunit2`.
+
+    git submodule update --init
+    make test # optional
